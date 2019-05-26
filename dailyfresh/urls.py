@@ -15,7 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import include,url
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'tinymce/',include('tinymce.urls')), # 富文本编辑器
+    url(r'user/', include('user.urls')), # 用户
+    url(r'cart/', include('cart.urls')), # 购物车
+    url(r'order/', include('order.urls')), # 订单
+    url(r'', include('goods.urls')), # 商品
 ]
