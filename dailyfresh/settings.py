@@ -64,8 +64,7 @@ ROOT_URLCONF = 'dailyfresh.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')]
-        ,
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -89,7 +88,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'dailyfresh',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': 3306,
         'USER': 'root',
         'PASSWORD': 'admin'
     }
@@ -128,7 +127,8 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+# True为默认时区，自定义须设置为False
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -141,6 +141,38 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # 富文本编辑器配置
 TINYMCE_DEFAULT_CONFIG = {
     'theme': 'advanced',
-    'width': '600',
-    'height': '400',
+    'width': 600,
+    'height': 400,
 }
+
+# 发送邮件配置
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# smpt服务地址
+EMAIL_HOST = 'smtp.163.com'
+EMAIL_PORT = 25
+# 发送邮件的邮箱
+EMAIL_HOST_USER = 'itsusu@163.com'
+# 在邮箱中设置的客户端授权密码
+EMAIL_HOST_PASSWORD = 'ss031393'
+#收件人看到的发件人
+EMAIL_FROM = '天天生鲜<itsusu@163.com>'
+
+
+# 缓存配置
+# Django使用redis作缓存配置
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/9",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
+
+# 配置session存储
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_CACHE_ALIAS = "default"
+
+# 配置登录url地址,默认是/accounts/login
+LOGIN_URL = '/user/login'
