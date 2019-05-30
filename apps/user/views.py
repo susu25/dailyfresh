@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from django.urls import reverse
+from django.core.urlresolvers import  reverse
 from django.contrib.auth import authenticate,login,logout
 from django.views.generic import View
 from django.http import HttpResponse
@@ -117,6 +117,10 @@ class LoginView(View):
         password = request.POST.get('pwd')
 
         # 校验数据
+        if not all([username, password]):
+            return render(request, 'login.html', {'errmsg':'数据不完整'})
+
+        # 登录校验
         user = authenticate(username=username, password=password)
         if user is not None:
             # 用户名密码正确
@@ -191,9 +195,9 @@ class UserInfoView(LoginRequiredMixin, View):
             goods_li.append(goods)
 
         # 组织上下文
-        context = {'page':'user',
-                   'address':address,
-                   'goods_li':goods_li}
+        context = {'page': 'user',
+                   'address': address,
+                   'goods_li': goods_li}
 
         # 除了自定义给模板传递的变量外，Django还会把request.user也传递给模板
         return render(request, 'user_center_info.html', context)
