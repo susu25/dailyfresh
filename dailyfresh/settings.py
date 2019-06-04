@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'cart',
     'order',
     'tinymce', #  富文本编辑器
+    'haystack', # haystack全文搜索框架
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -186,3 +187,21 @@ FDFS_CLIENT_CONF='./utils/fdfs/client.conf'
 
 # 设置fdfs存储服务器上nginx的IP和端口号
 FDFS_URL='http://127.0.0.1:8888/'
+
+# 配置全文搜索框架
+HAYSTACK_CONNECTIONS = {
+    'default':{
+        # 使用whoosh搜索引擎
+        # 'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
+        # 使用jieba中文分词的whoosh搜索引擎
+        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        # 索引文件路径
+        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+    }
+}
+
+# 当添加、修改、删除数据时，自动生成索引
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+# 指定搜索结果每页显示的条数
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 1
