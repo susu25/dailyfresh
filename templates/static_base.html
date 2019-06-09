@@ -12,6 +12,14 @@
     {% block topfiles %}{% endblock topfiles %}
 </head>
 <body>
+
+    {# 个人开发测试温馨提示 #}
+    <div style="width:auto; margin:0 auto; padding:10px 0; text-align:center; background-color:#7CFC00">
+        <p style="width:100%; height:5px; line-height:5px; margin: 0 auto; color:#FF0000;">
+            &gt;&gt;&gt;&gt;&gt;=====注意：该系统仅为个人开发测试，不做任何商业用途；若不慎下单请勿支付！=====&lt;&lt;&lt;&lt;&lt;
+        </p>
+    </div>
+
 {# 网页顶部欢迎信息块 #}
 {% block header_con %}
 	<div class="header_con">
@@ -29,7 +37,7 @@
 					<span>|</span>
 					<a href="cart.html">我的购物车</a>
 					<span>|</span>
-					<a href="{% url 'user:order' %}">我的订单</a>
+					<a href="{% url 'user:order' 1 %}">我的订单</a>
 				</div>
 			</div>
 		</div>		
@@ -39,10 +47,12 @@
 {# 网页顶部搜索框块 #}
 {% block search_bar %}
 	<div class="search_bar clearfix">
-		<a href="index.html" class="logo fl"><img src="{% static 'images/logo.png' %}"></a>
+		<a href="{% url 'goods:index' %}" class="logo fl"><img src="{% static 'images/logo.png' %}"></a>
 		<div class="search_con fl">
-			<input type="text" class="input_text fl" name="" placeholder="搜索商品">
-			<input type="button" class="input_btn fr" name="" value="搜索">
+            <form method="get" action="/search">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                <input type="submit" class="input_btn fr" name="" value="搜索">
+            </form>
 		</div>
 		<div class="guest_cart fr">
 			<a href="#" class="cart_name fl">我的购物车</a>
@@ -71,5 +81,17 @@
     {% block bottom %}{% endblock bottom %}
     {# 网页底部引入文件块 #}
 	{% block bottomfiles %}{% endblock bottomfiles %}
+
+    {# 公安备案号 #}
+    <div style="width:auto;margin:0 auto; padding:10px 0; text-align: center">
+        <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=41021102000104"
+           style="display:inline-block;text-decoration:none;height:20px;line-height:20px;">
+            <img src="/static/images/beian/beian.png" style="float:left;"/>
+            <p style="float:left;height:20px;line-height:20px;margin: 0 auto; color:#939393;">
+                豫公网安备 41021102000104号
+            </p>
+        </a>
+    </div>
+
 </body>
 </html>
