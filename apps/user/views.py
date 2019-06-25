@@ -213,7 +213,9 @@ class UserOrderView(LoginRequiredMixin, View):
         """显示"""
         # 获取用户的订单信息
         user = request.user
+
         orders = OrderInfo.objects.filter(user=user).order_by('-create_time')
+
 
         # 遍历获取订单商品信息
         for order in orders:
@@ -232,40 +234,40 @@ class UserOrderView(LoginRequiredMixin, View):
             # 动态给order增加属性，保存订单商品的信息
             order.order_skus = order_skus
 
-            # 分页
-            paginator = Paginator(orders, 1)
+        # 分页
+        paginator = Paginator(orders, 1)
 
-            # 获取第page页的内容
-            try:
-                page = int(page)
-            except Exception as e:
-                page = 1
+        # 获取第page页的内容
+        try:
+            page = int(page)
+        except Exception as e:
+            page = 1
 
-            if page > paginator.num_pages:
-                page = 1
+        if page > paginator.num_pages:
+            page = 1
 
-            # 获取第page页的Page实例对象
-            order_page = paginator.page(page)
+        # 获取第page页的Page实例对象
+        order_page = paginator.page(page)
 
-            # todo: 进行页码的控制，页面上最多显示5个页码
-            # 1.总页数小于5页，页面上显示所有页码
-            # 2.如果当前页是前3页，显示1-5页
-            # 3.如果当前页是后3页，显示后5页
-            # 4.其他情况，显示当前页的前2页，当前页，当前页的后2页
-            num_pages = paginator.num_pages
-            if num_pages < 5:
-                pages = range(1, num_pages + 1)
-            elif page <= 3:
-                pages = range(1, 6)
-            elif num_pages - page <= 2:
-                pages = range(num_pages - 4, num_pages + 1)
-            else:
-                pages = range(page - 2, page + 3)
+        # todo: 进行页码的控制，页面上最多显示5个页码
+        # 1.总页数小于5页，页面上显示所有页码
+        # 2.如果当前页是前3页，显示1-5页
+        # 3.如果当前页是后3页，显示后5页
+        # 4.其他情况，显示当前页的前2页，当前页，当前页的后2页
+        num_pages = paginator.num_pages
+        if num_pages < 5:
+            pages = range(1, num_pages + 1)
+        elif page <= 3:
+            pages = range(1, 6)
+        elif num_pages - page <= 2:
+            pages = range(num_pages - 4, num_pages + 1)
+        else:
+            pages = range(page - 2, page + 3)
 
         # 组织上下文
         context = {'order_page': order_page,
-                   'pages': pages,
-                   'page': 'order'}
+                    'pages': pages,
+                    'page': 'order'}
 
         return render(request, 'user_center_order.html', context)
 
